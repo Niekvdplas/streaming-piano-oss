@@ -6,14 +6,34 @@ Real-time piano transcription system that listens to Spotify playback via a virt
 
 ## Architecture
 
-```
-  ┌──────────┐   PulseAudio    ┌──────────┐   RabbitMQ    ┌──────────────┐   RabbitMQ    ┌────────┐
-  │ Spotifyd │ ──────────▶   │ Listener │ ──────────▶  │ Transcriber  │ ──────────▶  │ Player │
-  │ (Spotify)│  null sink     │(virtual  │  Audio chunks │  (AI model)  │  Note events │  (MIDI) │
-  └──────────┘  (spotifySink) │  mic)    │               └──────────────┘               └────┬───┘
-                              └──────────┘                                                   │
-                                                                                             ▼
-                                                                                       Synthesizer / DAW
+```mermaid
+flowchart LR
+    subgraph Spotify
+        SP[🎵 Spotify Cloud]
+    end
+
+    subgraph Jetson["🖥️ Jetson Orin Nano"]
+        SPD[Spotifyd]
+        PA[(PulseAudio\nnull sink)]
+        L[Listener]
+        MQ{RabbitMQ}
+        T[Transcriber\n🧠 AI Model]
+        P[Player]
+    end
+
+    SYNTH[🎹 Synthesizer / DAW]
+
+    SP -- streams audio --> SPD
+    SPD -- PulseAudio --> PA
+    PA -- "44.1 kHz stereo" --> L
+    L -- "Audio chunks\n(16 kHz mono)" --> MQ
+    MQ -- audio --> T
+    T -- "MIDI note events" --> MQ
+    MQ -- notes --> P
+    P -- "USB MIDI" --> SYNTH
+    SPD -. "play/pause\nevents" .-> MQ
+    MQ -. control .-> L
+    MQ -. "volume" .-> P
 ```
 
 Spotifyd streams piano music from Spotify into a PulseAudio null sink (`spotifySink`). The Listener captures audio from that virtual device, resamples it, and feeds it to the Transcriber for AI-based note recognition. The resulting MIDI events are sent to a physical synthesizer via the Player.
