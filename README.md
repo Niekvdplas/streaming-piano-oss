@@ -123,6 +123,31 @@ This project is designed for the **Seeed Studio reComputer J3011** (NVIDIA Jetso
 |---|---|---|
 | `MIDI_DEVICE_INDEX` | `1` | Index of the MIDI output device (see `python3 -c "import mido; print(mido.get_output_names())"`) |
 
+## Usage
+
+### What You Need
+
+- **A self-playing piano** — any piano with a built-in player system that accepts MIDI input via a DIN-5 connector. We used a [Steinway Spirio](https://www.steinway.com/spirio), but any piano with a MIDI-in port on its control board will work.
+- **A USB-to-DIN5 MIDI cable** — plug the USB side into the Jetson and the DIN-5 side into the MIDI input port on your piano.
+- **A WiFi network** — the Jetson needs internet access to stream from Spotify.
+
+### First Boot & WiFi Setup
+
+1. Power on the Jetson. On first boot (or when it can't find a known network), it will **create its own WiFi hotspot** called `PianoSpeaker`.
+2. Connect to the `PianoSpeaker` network from your phone or laptop.
+3. A captive portal will appear — select your home WiFi network, enter the password, and the Jetson will connect to it.
+4. The Jetson will remember your network for future boots.
+
+### Playing Music
+
+1. Open **Spotify** on your phone, tablet, or computer.
+2. Look for **PianoSpeaker** in your available devices / cast speakers.
+3. Select it and play any piano music — the notes will be transcribed in real-time and played on your physical piano.
+
+That's it. It's truly a black-box experience: plug it in, connect to WiFi once, and cast piano music to your acoustic piano from Spotify.
+
+> **⚠️ Spotify only:** At the moment, only Spotify is supported as a music source. The system uses Spotifyd under the hood, which requires a Spotify account.
+
 ## Systemd Services
 
 After installation, the following services are enabled:
