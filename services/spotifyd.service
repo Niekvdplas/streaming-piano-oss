@@ -1,0 +1,17 @@
+[Unit]
+Description=A Spotify playing daemon
+Wants=sound.target network-online.target
+After=sound.target network-online.target internet_conn.service
+After=pulseaudio.service rabbitmq-server.service
+Requires=rabbitmq-server.service
+
+[Service]
+ExecStartPre=/bin/sleep 65
+ExecStart=/dist/spotify.sh
+Environment="DISPLAY=:0"
+TimeoutStartSec=900
+Restart=always
+RestartSec=12
+
+[Install]
+WantedBy=default.target

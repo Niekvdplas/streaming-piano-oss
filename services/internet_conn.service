@@ -1,0 +1,11 @@
+[Unit]
+Description=Check Internet Connection and Launch Balena WiFi Connect if Needed
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/dist/check_internet.sh
+
+[Install]
+WantedBy=multi-user.target

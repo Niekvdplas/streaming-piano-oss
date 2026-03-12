@@ -1,0 +1,13 @@
+[Unit]
+Description=Transcriber Service
+After=network.target rabbitmq-server.service internet_conn.service
+Requires=rabbitmq-server.service
+
+[Service]
+ExecStart=/usr/bin/python3 /dist/transcriber.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target
+
