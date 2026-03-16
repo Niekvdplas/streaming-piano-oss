@@ -1,8 +1,14 @@
-# 🎹 Streaming Piano
+# 🎹 PianoSpeaker
 
 Real-time piano transcription system that listens to Spotify playback via a virtual microphone (PulseAudio null sink), uses an AI model to recognize piano notes, and outputs MIDI to a hardware synthesizer — all with sub-second latency.
 
 > **Note:** The transcription model is trained specifically for solo piano music. It works best with clean piano recordings and will produce poor results with vocals, drums, or other instruments mixed in.
+
+## Demo
+
+Check out the PianoSpeaker in action:
+
+[![Demo Video](https://img.shields.io/badge/Reddit-Watch%20Demo-FF4500?logo=reddit)](https://www.reddit.com/r/piano/comments/1krxhdy/we_made_a_selfplaying_piano_stream_songs_directly/)
 
 ## Architecture
 
@@ -182,6 +188,10 @@ python3 listener.py
 python3 transcriber.py
 python3 player.py
 ```
+
+## Help & Support
+
+If you have trouble setting up the system or have any questions, feel free to [open an issue](../../issues) on this repository.
 
 ## License
 
